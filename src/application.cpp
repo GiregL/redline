@@ -1,4 +1,4 @@
-#include "application.h"
+#include "headers/application.h"
 
 Application::Application(unsigned int width,
                          unsigned int height,
@@ -29,12 +29,12 @@ Application::Application(unsigned int width,
 void Application::loop()
 {
     std::vector<Vertex> vert {
-        Vertex {-0.5f, -0.5f, 0.0f, Color {1.0f, 0.0f, 0.0f}},
-        Vertex {0.5f, -0.5f, 0.0f, Color{0.0f, 1.0f, 0.0f}},
-        Vertex {0.0f, 0.5f, 0.0f, Color {0.0f, 0.0f, 1.0f}}
+        Vertex {-0.5, -0.5, 0.0, Color {1.0, 0.0, 0.0}},
+        Vertex {0.5, -0.5, 0.0, Color{0.0, 1.0, 0.0}},
+        Vertex {0.0, 0.5, 0.0, Color {0.0, 0.0, 1.0}}
     };
 
-    std::vector<float> vertices {};
+    std::vector<double> vertices {};
     vertices.reserve(6 * vert.size());
 
     auto it = std::begin(vert);
@@ -49,7 +49,14 @@ void Application::loop()
         it++;
     }
 
-    Shader shader {"vertex.glsl", "fragment.glsl"};
+    Shader shader {"shaders/vertex.glsl", "shaders/fragment.glsl"};
+
+    glm::mat4 projection { glm::perspective(glm::radians(70.0f), (1080.0f / 720.0f), 0.1f, 100.0f) };
+    glm::mat4 view { glm::translate(glm::mat4 {1.0f}, glm::vec3 {0.0f, 0.0f, -5}) };
+    glm::mat4 model { glm::scale(glm::mat4 {1.0f}, glm::vec3 {0.5f}) };
+    glm::mat4 total = projection * view * model;
+
+    shader.setMatrix4f("model_matrix", total);
 
     unsigned int vbo, vao;
     glGenBuffers(1, &vbo);
@@ -57,9 +64,9 @@ void Application::loop()
 
     glBindVertexArray(vao);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float), vertices.data(), GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), nullptr);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), reinterpret_cast<void *>(3 * sizeof(float)));
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(double), vertices.data(), GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 6 * sizeof(double), nullptr);
+    glVertexAttribPointer(1, 3, GL_DOUBLE, GL_FALSE, 6 * sizeof(double), reinterpret_cast<void *>(3 * sizeof(double)));
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 

@@ -1,6 +1,6 @@
-#include "color.h"
+#include "headers/color.h"
 
-Color::Color(float r, float g, float b)
+Color::Color(double r, double g, double b)
     : m_r {r}
     , m_g {g}
     , m_b {b}

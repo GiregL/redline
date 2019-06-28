@@ -1,8 +1,8 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <SFML/Window.hpp>
-#include "application.h"
-#include "vertex.h"
+#include "headers/application.h"
+#include "headers/vertex.h"
 
 int main()
 {

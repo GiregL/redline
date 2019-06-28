@@ -23,23 +23,26 @@ CONFIG(debug, debug|release)
 LIBS += -lsfml-graphics -lsfml-window -lsfml-system -lGLU -lGL -lGLEW -ldl
 }
 
+CONFIG += file_copies
+
+COPIES += shaders
+
+shaders.files = $$files(shaders/*.glsl)
+shaders.path = $$OUT_PWD/shaders
+
 SOURCES += \
         src/application.cpp \
         src/color.cpp \
         src/main.cpp \
-        src/rawmodel.cpp \
         src/shader.cpp \
-        src/vao.cpp \
         src/vertex.cpp
 
 HEADERS += \
     headers/application.h \
     headers/color.h \
-    headers/rawmodel.h \
     headers/shader.h \
-    headers/vao.h \
     headers/vertex.h
 
 DISTFILES += \
-    fragment.glsl \
-    vertex.glsl
+    shaders/fragment.glsl \
+    shaders/vertex.glsl
