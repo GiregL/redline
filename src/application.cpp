@@ -51,12 +51,13 @@ void Application::loop()
 
     Shader shader {"shaders/vertex.glsl", "shaders/fragment.glsl"};
 
-    glm::mat4 projection { glm::perspective(glm::radians(70.0f), (1080.0f / 720.0f), 0.1f, 100.0f) };
-    glm::mat4 view { glm::translate(glm::mat4 {1.0f}, glm::vec3 {0.0f, 0.0f, -5}) };
-    glm::mat4 model { glm::scale(glm::mat4 {1.0f}, glm::vec3 {0.5f}) };
-    glm::mat4 total = projection * view * model;
-
-    shader.setMatrix4f("model_matrix", total);
+    glm::mat4 trans {1};
+    glm::mat4 perspective {glm::perspective(70.0f, (1080.0f / 720.0f), 0.1f, 1000.0f)};
+    glm::mat4 view {glm::lookAt(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f))};
+    glm::mat4 translation {1};
+    glm::mat4 model {glm::translate(translation, glm::vec3(0.0, 0.0, 5.0))};
+    trans = perspective * view * model;
+    std::cout << "Matrix : \n" << glm::to_string(trans) << std::endl;
 
     unsigned int vbo, vao;
     glGenBuffers(1, &vbo);
@@ -88,7 +89,7 @@ void Application::loop()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         shader.use();
-
+        shader.setMatrix4f("model_matrix", trans);
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 

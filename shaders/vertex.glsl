@@ -1,10 +1,11 @@
 #version 330 core
+#extension GL_ARB_explicit_uniform_location : enable
 layout (location = 0) in vec3 aPos;
 layout (location = 1) in vec3 aCol;
 
 out vec4 vertexColor;
 
-uniform mat4 model_matrix;
+layout (location = 42) uniform mat4 model_matrix;
 
 void main()
 {

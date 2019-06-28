@@ -7,6 +7,7 @@
 #include <iostream>
 #include <glm/mat4x4.hpp>
 #include <glm/common.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 /**
  * @brief The Shader class
@@ -59,7 +60,7 @@ public:
      * @param name name of the shader variable
      * @param val new value
      */
-    void setMatrix4f(std::string const & name, glm::mat4x4 val) const;
+    void setMatrix4f(std::string const & name, glm::mat4x4 & val) const;
 
 private:
     unsigned int m_id;
