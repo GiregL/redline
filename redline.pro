@@ -31,6 +31,7 @@ shaders.files = $$files(shaders/*.glsl)
 shaders.path = $$OUT_PWD/shaders
 
 SOURCES += \
+        src/camera.cpp \
         src/application.cpp \
         src/color.cpp \
         src/main.cpp \
@@ -38,6 +39,7 @@ SOURCES += \
         src/vertex.cpp
 
 HEADERS += \
+    headers/camera.h \
     headers/application.h \
     headers/color.h \
     headers/shader.h \

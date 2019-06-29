@@ -32,7 +32,7 @@ public:
     /**
      * @brief use use the shader
      */
-    void use();
+    void use() const;
 
     /**
      * @brief setBool sets a shader variable value

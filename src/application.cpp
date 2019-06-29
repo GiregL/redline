@@ -51,14 +51,6 @@ void Application::loop()
 
     Shader shader {"shaders/vertex.glsl", "shaders/fragment.glsl"};
 
-    glm::mat4 trans {1};
-    glm::mat4 perspective {glm::perspective(70.0f, (1080.0f / 720.0f), 0.1f, 1000.0f)};
-    glm::mat4 view {glm::lookAt(glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f))};
-    glm::mat4 translation {1};
-    glm::mat4 model {glm::translate(translation, glm::vec3(0.0, 0.0, 5.0))};
-    trans = perspective * view * model;
-    std::cout << "Matrix : \n" << glm::to_string(trans) << std::endl;
-
     unsigned int vbo, vao;
     glGenBuffers(1, &vbo);
     glGenVertexArrays(1, &vao);
@@ -76,6 +68,8 @@ void Application::loop()
 
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
+    Camera camera {0, 0, 0, 0, 0, 0};
+
     while (m_running)
     {
         sf::Event event;
@@ -85,11 +79,14 @@ void Application::loop()
             {
                 m_running = false;
             }
+            camera.renderUpdate(event);
         }
+        // Rendering
+        camera.applyUpdates();
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         shader.use();
-        shader.setMatrix4f("model_matrix", trans);
+        camera.sendMatrix("model_matrix", shader);
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 

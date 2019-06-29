@@ -101,7 +101,7 @@ Shader::Shader(const GLchar * vertexPath,
     glDeleteShader(fragment);
 }
 
-void Shader::use()
+void Shader::use() const
 {
     glUseProgram(m_id);
 }
