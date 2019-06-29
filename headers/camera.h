@@ -15,11 +15,12 @@ public:
     Camera(float x, float y, float z
            , float rx, float ry, float rz);
     void renderUpdate(sf::Event const & event);
-    void sendMatrix(std::string const & name, Shader const & shader);
+    glm::mat4x4 sendMatrix();
     void applyUpdates();
 
 private:
-    glm::mat4x4 m_modelview;
+    glm::mat4x4 m_viewmatrix;
+    glm::mat4x4 m_projection;
     glm::vec3 m_position;
     glm::quat m_rotation;
 

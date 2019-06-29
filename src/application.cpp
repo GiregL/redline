@@ -69,6 +69,7 @@ void Application::loop()
     glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 
     Camera camera {0, 0, 0, 0, 0, 0};
+    glm::mat4x4 model_matrix {1};
 
     while (m_running)
     {
@@ -79,6 +80,14 @@ void Application::loop()
             {
                 m_running = false;
             }
+            if (event.type == sf::Event::KeyPressed)
+            {
+                if (event.key.code == sf::Keyboard::Escape)
+                {
+                    m_window.close();
+                    m_running = false;
+                }
+            }
             camera.renderUpdate(event);
         }
         // Rendering
@@ -86,7 +95,8 @@ void Application::loop()
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         shader.use();
-        camera.sendMatrix("model_matrix", shader);
+        glm::mat4x4 mvp {camera.sendMatrix() * model_matrix};
+        shader.setMatrix4f("model_matrix", mvp);
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
